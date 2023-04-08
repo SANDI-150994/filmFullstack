@@ -13,21 +13,16 @@ const Movie = ({navigation}) => {
   console.log ("data yang akan di render", movies)
   return (
     <ScrollView style={styles.container}>
-      {
-        movies.map ((item, index) => {
+      {movies.map ((item, index) => {
           return (
-            <TouchableOpacity
-            onPress={() => {
-                navigation.navigate('Detail', {movie_id: item.id})
-            } }
-            >
+            <TouchableOpacity onPress={() => {navigation.navigate('Detail', {movie_id: item.id})}}>
               <View style={styles.containerImage} key={index}>
-              <Image style ={styles.image} source ={{uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`}}/>
+                <Image style ={styles.image} source ={{uri: `https://image.tmdb.org/t/p/w500${item.poster_path}`}}/>
             
                 <Text style={styles.titile_text}>{item.title}</Text>
                 <Text style={styles.release_text}>{item.release_date}</Text>
                 <Text style={styles.overview_text}>{item.overview}</Text>  
-            </View>
+              </View>
             </TouchableOpacity>
           )
         })
