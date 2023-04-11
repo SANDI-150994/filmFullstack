@@ -1,43 +1,70 @@
-import { View, Text, StyleSheet, Image, TextInput, TouchableOpacity } from 'react-native'
+import { View, Text, Image, StyleSheet, TextInput, TouchableOpacity, ToastAndroid } from 'react-native'
 import React from 'react'
 import Logo from '../../assets/movie.png'
 import { useNavigation } from '@react-navigation/native'
 
 const RegisterScreen = () => {
     const navigation = useNavigation();
+    const [nrp, setNrp] = React.useState('')
+    const [nama, setNama] = React.useState('')
+    const [password, setPassword] = React.useState('')
+
+    const handleLogin = async (value) =>{
+        console.log ('value', value)
+        try {
+            const response =await 
+            axios.post('http://192.168.1.24:3300/users/login', 
+            { nrp: value.nrp, password:value.password})
+            
+            console.log('response', response.data)
+            if (response.data.status == 200){
+                navigation.navigate('Movie')
+                ToastAndroid.show(response.data.metadata, ToastAndroid.SHORT)
+            }
+        } catch (error) {
+            console.log(error.message)
+            ToastAndroid.show("Cek kembali nrp dan password", ToastAndroid.SHORT)
+        }
+    }
+
     return (
         <View style={styles.container}>
             <Image source={Logo} style={styles.logo} />
             <View>
                 <TextInput
                     style={styles.input}
-                    placeholder="Name"
+                    placeholder="Nrp"
                     placeholderTextColor="white"
+                    onChangeText={(nrp)=> setNrp(nrp)}
+                    value={nrp}
                 />
                 <TextInput
                     style={styles.input}
-                    placeholder="Username"
+                    placeholder="Nama"
                     placeholderTextColor="white"
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Email"
-                    placeholderTextColor="white"
+                    onChangeText={(nama)=> setNama(nama)}
+                    value={nama}
                 />
                 <TextInput
                     style={styles.input}
                     placeholder="Password"
                     placeholderTextColor="white"
+                    onChangeText={(password)=> setPassword(password)}
+                    value={password}
                 />
                 <TouchableOpacity
                     style={styles.button}
+                    onPress={async ()=>{
+                        await handleLogin({ nrp, nama, password})
+                    }}
                 >
                     <Text style={styles.textButton}>Register</Text>
                 </TouchableOpacity>
+
                 <Text style={styles.text}>Already have an account?
                     <Text
                         style={{ fontWeight: 'bold' }}
-                    onPress={() => navigation.goBack()}
+                    onPress={() => navigation.goBack('LoginScreen')}
                     > Sign in</Text>
                 </Text>
             </View>

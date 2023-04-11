@@ -14,7 +14,7 @@ const LoginScreen = () => {
         console.log ('value', value)
         try {
             const response =await 
-            axios.post('http://192.168.8.19:3300/users/login', 
+            axios.post('http://192.168.1.24:3300/users/login', 
             { nrp: value.nrp, password:value.password})
             
             console.log('response', response.data)
